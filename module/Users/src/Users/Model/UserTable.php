@@ -1,4 +1,5 @@
 <?php
+
 namespace Users\Model;
 
 use Zend\Db\Adapter\Adapter;
@@ -31,6 +32,13 @@ class UserTable {
         }
     }
 
+  
+
+    public function fetchAll() {
+        $resultSet = $this->tableGateway->select();
+        return $resultSet;
+    }
+
     public function getUser($id) {
         $id = (int) $id;
         $rowset = $this->tableGateway->select(array('id' => $id));
@@ -39,6 +47,20 @@ class UserTable {
             throw new \Exception("Could not find row $id");
         }
         return $row;
+    }
+
+    public function getUserByEmail($userEmail) {
+        $rowset = $this->tableGateway->select(array('email' =>
+            $userEmail));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $ userEmail");
+        }
+        return $row;
+    }
+
+    public function deleteUser($id) {
+        $this->tableGateway->delete(array('id' => $id));
     }
 
 }
